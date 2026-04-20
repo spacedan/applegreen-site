@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AppleGreen Tech — Cloud Infrastructure & DevOps Consulting</title>
+<meta name="description" content="Senior DevOps and Kubernetes consulting for federal, defense, and commercial clients. OpenShift, AWS, CI/CD, security compliance.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0a0f0d;
+  --bg2:#0f1512;
+  --bg3:#141c18;
+  --surface:#1a2620;
+  --surface2:#1f2e27;
+  --green:#34d399;
+  --green-dim:#1a7a52;
+  --green-glow:rgba(52,211,153,0.08);
+  --green-glow2:rgba(52,211,153,0.04);
+  --lime:#a3e635;
+  --text:#e8ede9;
+  --text2:#9caba1;
+  --text3:#5e6e64;
+  --border:#243830;
+  --border2:#1c2d25;
+  --font-body:'DM Sans',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+/* --- Grid Background --- */
+body::before{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(var(--border2) 1px,transparent 1px),
+    linear-gradient(90deg,var(--border2) 1px,transparent 1px);
+  background-size:60px 60px;
+  opacity:0.35;
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 800px 600px at 20% 10%,rgba(52,211,153,0.04),transparent 70%),
+             radial-gradient(ellipse 600px 500px at 80% 80%,rgba(163,230,53,0.02),transparent 70%);
+}
+
+/* --- Layout --- */
+.container{max-width:1100px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+
+/* --- Nav --- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(10,15,13,0.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border2);
+}
+.nav-inner{
+  max-width:1100px;margin:0 auto;padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;
+}
+.logo{
+  font-family:var(--font-mono);font-size:15px;font-weight:500;
+  color:var(--green);letter-spacing:-0.02em;
+  text-decoration:none;
+  display:flex;align-items:center;gap:8px;
+}
+.logo-dot{width:8px;height:8px;background:var(--green);border-radius:50%;
+  box-shadow:0 0 12px rgba(52,211,153,0.5)}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{
+  font-size:13px;color:var(--text2);text-decoration:none;
+  font-weight:400;letter-spacing:0.02em;
+  text-transform:uppercase;transition:color .2s;
+}
+.nav-links a:hover{color:var(--green)}
+.hamburger{display:none;background:none;border:none;color:var(--text);cursor:pointer}
+
+/* --- Hero --- */
+.hero{
+  padding:160px 0 100px;
+  position:relative;
+}
+.hero-label{
+  font-family:var(--font-mono);font-size:12px;color:var(--green);
+  letter-spacing:0.12em;text-transform:uppercase;
+  margin-bottom:20px;display:flex;align-items:center;gap:10px;
+}
+.hero-label::before{content:'';width:32px;height:1px;background:var(--green)}
+.hero h1{
+  font-size:clamp(36px,5.5vw,64px);font-weight:600;
+  line-height:1.08;letter-spacing:-0.03em;
+  color:var(--text);margin-bottom:24px;max-width:700px;
+}
+.hero h1 em{font-style:normal;color:var(--green)}
+.hero-sub{
+  font-size:18px;color:var(--text2);max-width:540px;
+  line-height:1.7;margin-bottom:40px;font-weight:300;
+}
+.hero-ctas{display:flex;gap:16px;flex-wrap:wrap}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 28px;font-size:14px;font-weight:500;
+  border-radius:6px;text-decoration:none;transition:all .2s;
+  cursor:pointer;border:none;font-family:var(--font-body);
+}
+.btn-primary{
+  background:var(--green);color:var(--bg);
+}
+.btn-primary:hover{background:#4ade80;transform:translateY(-1px)}
+.btn-secondary{
+  background:transparent;color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-secondary:hover{border-color:var(--green-dim);color:var(--green)}
+
+/* --- Stats Bar --- */
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--border2);
+  border:1px solid var(--border2);border-radius:8px;
+  overflow:hidden;margin:80px 0;
+}
+.stat{background:var(--bg2);padding:28px 24px;text-align:center}
+.stat-num{
+  font-family:var(--font-mono);font-size:28px;font-weight:500;
+  color:var(--green);margin-bottom:4px;
+}
+.stat-label{font-size:13px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em}
+
+/* --- Sections --- */
+section{padding:80px 0}
+.section-label{
+  font-family:var(--font-mono);font-size:11px;color:var(--green-dim);
+  letter-spacing:0.14em;text-transform:uppercase;margin-bottom:12px;
+}
+.section-title{
+  font-size:clamp(24px,3.5vw,36px);font-weight:600;
+  letter-spacing:-0.025em;margin-bottom:16px;
+}
+.section-desc{font-size:16px;color:var(--text2);max-width:520px;margin-bottom:48px;font-weight:300}
+
+/* --- Services Grid --- */
+.services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border2);border:1px solid var(--border2);border-radius:8px;overflow:hidden}
+.service-card{
+  background:var(--bg2);padding:36px 32px;
+  transition:background .25s;position:relative;
+}
+.service-card:hover{background:var(--bg3)}
+.service-icon{
+  font-family:var(--font-mono);font-size:20px;
+  color:var(--green);margin-bottom:16px;display:block;
+  width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  background:var(--green-glow);border-radius:8px;border:1px solid var(--border);
+}
+.service-card h3{font-size:18px;font-weight:500;margin-bottom:10px;letter-spacing:-0.01em}
+.service-card p{font-size:14px;color:var(--text2);line-height:1.65;font-weight:300}
+
+/* --- Consultations --- */
+.consult-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.consult-card{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:8px;padding:32px 28px;
+  transition:border-color .25s, transform .25s;
+}
+.consult-card:hover{border-color:var(--green-dim);transform:translateY(-2px)}
+.consult-card h3{font-size:17px;font-weight:500;margin-bottom:16px;letter-spacing:-0.01em}
+.consult-bullets{list-style:none;display:flex;flex-direction:column;gap:10px}
+.consult-bullets li{
+  font-size:13.5px;color:var(--text2);padding-left:22px;
+  position:relative;line-height:1.55;font-weight:300;
+}
+.consult-bullets li::before{
+  content:'✓';position:absolute;left:0;
+  color:var(--green);font-weight:500;font-size:13px;
+}
+
+/* --- About --- */
+.about-content{
+  display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;
+}
+.about-text p{font-size:15px;color:var(--text2);margin-bottom:16px;font-weight:300}
+.cert-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.cert-tag{
+  font-family:var(--font-mono);font-size:11px;
+  padding:6px 12px;border-radius:4px;
+  background:var(--surface);border:1px solid var(--border2);
+  color:var(--text3);white-space:nowrap;
+}
+.about-clients h4{
+  font-family:var(--font-mono);font-size:11px;color:var(--green-dim);
+  letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;
+}
+.client-list{display:flex;flex-direction:column;gap:12px}
+.client-item{
+  font-size:14px;color:var(--text2);padding:12px 16px;
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:6px;font-weight:300;
+}
+.client-item strong{color:var(--text);font-weight:500}
+
+/* --- Contact --- */
+.contact-section{padding-bottom:120px}
+.contact-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.contact-info p{font-size:15px;color:var(--text2);margin-bottom:20px;font-weight:300}
+.contact-email{
+  font-family:var(--font-mono);font-size:14px;
+  color:var(--green);text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 16px;background:var(--green-glow);
+  border-radius:6px;border:1px solid var(--border);
+  transition:background .2s;
+}
+.contact-email:hover{background:rgba(52,211,153,0.12)}
+
+.form-wrap{
+  background:var(--bg2);border:1px solid var(--border2);
+  border-radius:8px;padding:32px;
+}
+.form-row{margin-bottom:20px}
+.form-row label{
+  display:block;font-size:12px;color:var(--text3);
+  text-transform:uppercase;letter-spacing:0.06em;
+  margin-bottom:6px;font-family:var(--font-mono);
+}
+.form-row input,.form-row textarea,.form-row select{
+  width:100%;padding:12px 14px;font-size:14px;
+  font-family:var(--font-body);color:var(--text);
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:6px;outline:none;transition:border-color .2s;
+  resize:vertical;
+}
+.form-row input:focus,.form-row textarea:focus,.form-row select:focus{
+  border-color:var(--green-dim);
+}
+.form-row textarea{min-height:100px}
+.form-row select option{background:var(--bg);color:var(--text)}
+
+/* Captcha */
+.captcha-box{
+  display:flex;align-items:center;gap:12px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:6px;padding:14px 16px;margin-bottom:20px;
+}
+.captcha-question{
+  font-family:var(--font-mono);font-size:14px;color:var(--lime);
+  white-space:nowrap;
+}
+.captcha-input{
+  width:72px !important;text-align:center;
+  font-family:var(--font-mono) !important;font-size:16px !important;
+  padding:8px !important;
+}
+.captcha-label{font-size:12px;color:var(--text3);margin-left:auto;white-space:nowrap}
+.captcha-refresh{
+  background:none;border:1px solid var(--border);color:var(--text3);
+  width:32px;height:32px;border-radius:4px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;transition:all .2s;flex-shrink:0;
+}
+.captcha-refresh:hover{border-color:var(--green-dim);color:var(--green)}
+
+.form-submit{width:100%;justify-content:center}
+.form-msg{
+  text-align:center;padding:12px;margin-top:16px;
+  border-radius:6px;font-size:14px;display:none;
+}
+.form-msg.success{display:block;background:rgba(52,211,153,0.1);color:var(--green);border:1px solid var(--green-dim)}
+.form-msg.error{display:block;background:rgba(239,68,68,0.1);color:#f87171;border:1px solid rgba(239,68,68,0.3)}
+
+/* Honeypot */
+.hp-field{position:absolute;left:-9999px;opacity:0;height:0;width:0;overflow:hidden}
+
+/* --- Footer --- */
+footer{
+  border-top:1px solid var(--border2);padding:32px 0;
+  text-align:center;
+}
+footer p{font-size:13px;color:var(--text3);font-weight:300}
+
+/* --- Animations --- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{opacity:0;animation:fadeUp .6s ease forwards}
+.fade-in.d1{animation-delay:.1s}.fade-in.d2{animation-delay:.2s}
+.fade-in.d3{animation-delay:.3s}.fade-in.d4{animation-delay:.4s}
+
+/* --- Mobile --- */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .nav-links.open{
+    display:flex;flex-direction:column;
+    position:absolute;top:64px;left:0;right:0;
+    background:rgba(10,15,13,0.95);
+    backdrop-filter:blur(16px);
+    padding:20px 24px;gap:16px;
+    border-bottom:1px solid var(--border2);
+  }
+  .hamburger{display:block}
+  .hero{padding:120px 0 60px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .services-grid{grid-template-columns:1fr}
+  .consult-grid{grid-template-columns:1fr}
+  .about-content{grid-template-columns:1fr;gap:40px}
+  .contact-layout{grid-template-columns:1fr;gap:40px}
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo"><span class="logo-dot"></span>applegreen.tech</a>
+    <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#consultations">Consult</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-label fade-in">Danny Huston</div>
+    <h1 class="fade-in d1">Cloud infrastructure<br>built for <em>mission-critical</em> scale.</h1>
+    <p class="hero-sub fade-in d2">Senior Kubernetes and DevOps engineer specializing in secure, compliant platform engineering for federal defense, intelligence, and commercial organizations.</p>
+    <div class="hero-ctas fade-in d3">
+      <a href="#contact" class="btn btn-primary">Start a conversation</a>
+      <a href="#consultations" class="btn btn-secondary">Book a consultation</a>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="container">
+  <div class="stats fade-in d4">
+    <div class="stat"><div class="stat-num">12+</div><div class="stat-label">Years Experience</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label">AWS Certifications</div></div>
+    <div class="stat"><div class="stat-num">DoD</div><div class="stat-label">Clearance Level</div></div>
+    <div class="stat"><div class="stat-num">2000+</div><div class="stat-label">NIST Controls</div></div>
+  </div>
+</div>
+
+<!-- Services -->
+<section id="services">
+  <div class="container">
+    <div class="section-label">Services</div>
+    <h2 class="section-title">What I do</h2>
+    <p class="section-desc">End-to-end cloud platform engineering from architecture through ATO — built for environments where failure isn't an option.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="service-icon">K8s</span>
+        <h3>Kubernetes &amp; OpenShift</h3>
+        <p>Architecture, deployment, and day-2 operations for vanilla Kubernetes and RedHat OpenShift in commercial, GovCloud, and air-gapped environments. Performance tuning for compute-intensive ML and AI workloads.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">CI</span>
+        <h3>CI/CD &amp; Automation</h3>
+        <p>Design and optimize automated build, test, and deployment pipelines with GitHub Actions, GitLab CI, Jenkins, and ArgoCD. From code commit to production in minutes, not days.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">IaC</span>
+        <h3>Infrastructure as Code</h3>
+        <p>Reproducible, version-controlled infrastructure with Terraform, Pulumi, AWS CDK, and CloudFormation. Multi-cloud deployments across AWS, GCP, Azure, and Oracle Cloud.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">Sec</span>
+        <h3>Security &amp; Compliance</h3>
+        <p>NIST 800-53, FedRAMP, and SOC 2 compliance for containerized platforms. IAM architecture, network policy, secrets management, and full A&amp;A documentation through ATO.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Consultations -->
+<section id="consultations">
+  <div class="container">
+    <div class="section-label">Consultations</div>
+    <h2 class="section-title">Book a focused session</h2>
+    <p class="section-desc">Targeted consulting engagements designed to solve specific problems and deliver measurable outcomes.</p>
+    <div class="consult-grid">
+
+      <div class="consult-card">
+        <h3>AWS Well-Architected Review</h3>
+        <ul class="consult-bullets">
+          <li>CI/CD pipelines in AWS</li>
+          <li>Code-to-production automated pipelines</li>
+          <li>Scale-from-zero infrastructure</li>
+          <li>Serverless function architecture</li>
+          <li>Zero-trust secure environments</li>
+        </ul>
+      </div>
+
+      <div class="consult-card">
+        <h3>Containerize &amp; Deploy Your Application</h3>
+        <ul class="consult-bullets">
+          <li>Dockerize with production-optimized, minimal-footprint images</li>
+          <li>Kubernetes deployment architecture with Helm, health checks, and resource limits</li>
+          <li>Service mesh and ingress routing for secure inter-service communication</li>
+          <li>Automated image scanning and registry management</li>
+          <li>Migrate from monolith or VMs to a portable container platform</li>
+        </ul>
+      </div>
+
+      <div class="consult-card">
+        <h3>Enhance AI/ML Workloads with Kubernetes</h3>
+        <ul class="consult-bullets">
+          <li>GPU-aware Kubernetes scheduling and node pools for training and inference</li>
+          <li>ML pipeline orchestration with Argo Workflows, Kubeflow, or custom operators</li>
+          <li>Auto-scaling inference endpoints that handle traffic spikes efficiently</li>
+          <li>Optimize container images and resource requests to reduce GPU idle time</li>
+          <li>Model CI/CD — automated build, test, and rollout to production</li>
+        </ul>
+      </div>
+
+      <div class="consult-card">
+        <h3>Security &amp; Compliance Review</h3>
+        <ul class="consult-bullets">
+          <li>Assess against NIST 800-53, SOC 2, or FedRAMP control families</li>
+          <li>Audit IAM policies, network segmentation, and secrets management</li>
+          <li>Review Kubernetes RBAC, pod security, and runtime hardening</li>
+          <li>Identify documentation gaps and build evidence collection workflows</li>
+          <li>Prioritized remediation roadmap with risk ratings</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">About</div>
+    <h2 class="section-title">Danny Huston</h2>
+    <div class="about-content">
+      <div class="about-text">
+        <p>I'm a senior cloud infrastructure and DevOps engineer with over 12 years of experience building, securing, and scaling platforms for some of the most demanding environments in the federal government.</p>
+        <p>Currently serving as a Senior RedHat OpenShift Administrator for the Defense Intelligence Agency's Platform-as-a-Service program, I bring deep expertise in Kubernetes operations, CI/CD automation, and security compliance for classified and air-gapped environments.</p>
+        <p>My work spans the full platform lifecycle — from initial architecture and infrastructure-as-code development through deployment, hardening, monitoring, and ATO. I've led compliance efforts covering 2,000+ NIST 800-53 controls and built MLOps platforms for geospatial computer vision workloads.</p>
+        <p>B.S. Applied Physics, Christopher Newport University. </p>
+        <div class="cert-grid">
+          <span class="cert-tag">AWS DevOps Professional</span>
+          <span class="cert-tag">AWS Solutions Architect</span>
+          <span class="cert-tag">AWS SysOps Admin</span>
+          <span class="cert-tag">CKAD</span>
+          <span class="cert-tag">CKA (in progress)</span>
+          <span class="cert-tag">AZ-900</span>
+        </div>
+      </div>
+      <div class="about-clients">
+        <h4>Select experience</h4>
+        <div class="client-list">
+          <div class="client-item"><strong>Defense Intelligence Agency</strong> — OpenShift PaaS platform engineering</div>
+          <div class="client-item"><strong>National Reconnaissance Office</strong> — Serverless AWS CDK infrastructure</div>
+          <div class="client-item"><strong>National Geospatial-Intelligence Agency</strong> — Air-gapped OpenShift ATO</div>
+          <div class="client-item"><strong>DARPA</strong> — Containerized cybersecurity platform CI/CD</div>
+          <div class="client-item"><strong>NOAA National Weather Service</strong> — Linux systems &amp; GIS infrastructure</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="contact-section">
+  <div class="container">
+    <div class="section-label">Contact</div>
+    <h2 class="section-title">Let's talk</h2>
+    <div class="contact-layout">
+      <div class="contact-info">
+        <p>Whether you need ongoing platform support, a focused consultation, or help navigating a compliance challenge — I'd like to hear about it.</p>
+        <p>Fill out the form or reach me directly:</p>
+        <a href="mailto:danny@applegreen.tech" class="contact-email">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13L2 4"/></svg>
+          danny@applegreen.tech
+        </a>
+      </div>
+      <div class="form-wrap">
+        <form id="contactForm" method="POST" action="https://formspree.io/f/xkokzbzj" novalidate>
+          <!-- Honeypot anti-spam -->
+          <div class="hp-field">
+            <label>Leave blank</label>
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off">
+          </div>
+          <input type="hidden" name="_subject" value="New inquiry from applegreen.tech">
+          <div class="form-row">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required placeholder="Your name">
+          </div>
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required placeholder="you@company.com">
+          </div>
+          <div class="form-row">
+            <label for="interest">Interest</label>
+            <select id="interest" name="interest">
+              <option value="General Inquiry">General inquiry</option>
+              <option value="Consulting Retainer">Consulting retainer</option>
+              <option value="AWS Well-Architected Review">AWS Well-Architected Review</option>
+              <option value="Containerization">Containerize &amp; deploy</option>
+              <option value="AI/ML Kubernetes">AI/ML Kubernetes workloads</option>
+              <option value="Security/Compliance Review">Security &amp; compliance review</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" required placeholder="Tell me about your project or challenge..."></textarea>
+          </div>
+
+          <!-- Math Captcha -->
+          <div class="captcha-box">
+            <span class="captcha-question" id="captchaQ"></span>
+            <input type="text" class="captcha-input" id="captchaA" placeholder="?" autocomplete="off" inputmode="numeric" required>
+            <span class="captcha-label">Verify</span>
+            <button type="button" class="captcha-refresh" onclick="generateCaptcha()" title="New question">&#x21bb;</button>
+          </div>
+
+          <button type="submit" class="btn btn-primary form-submit">Send message</button>
+          <div class="form-msg" id="formMsg"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <p>&copy; 2026 AppleGreen Tech. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+// --- Math CAPTCHA ---
+let captchaAnswer = 0;
+
+function generateCaptcha() {
+  const ops = [
+    () => { const a = rand(3,15), b = rand(2,12); return { q: `${a} + ${b}`, a: a + b }; },
+    () => { const a = rand(10,25), b = rand(2,9); return { q: `${a} − ${b}`, a: a - b }; },
+    () => { const a = rand(2,9), b = rand(2,9); return { q: `${a} × ${b}`, a: a * b }; },
+  ];
+  const op = ops[Math.floor(Math.random() * ops.length)]();
+  document.getElementById('captchaQ').textContent = op.q + ' =';
+  captchaAnswer = op.a;
+  document.getElementById('captchaA').value = '';
+}
+
+function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+generateCaptcha();
+
+// --- Form submission ---
+const form = document.getElementById('contactForm');
+const msg = document.getElementById('formMsg');
+
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  // Honeypot check
+  if (form.querySelector('[name="_gotcha"]').value) return;
+
+  // Captcha check
+  const userAnswer = parseInt(document.getElementById('captchaA').value, 10);
+  if (isNaN(userAnswer) || userAnswer !== captchaAnswer) {
+    msg.className = 'form-msg error';
+    msg.textContent = 'Incorrect answer — please try the math question again.';
+    generateCaptcha();
+    return;
+  }
+
+  const btn = form.querySelector('.form-submit');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  try {
+    const data = new FormData(form);
+    const res = await fetch(form.action, {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      msg.className = 'form-msg success';
+      msg.textContent = 'Message sent — I\'ll be in touch shortly.';
+      form.reset();
+      generateCaptcha();
+    } else {
+      throw new Error('Form submission failed');
+    }
+  } catch (err) {
+    msg.className = 'form-msg error';
+    msg.textContent = 'Something went wrong. Please email danny@applegreen.tech directly.';
+  }
+  btn.textContent = 'Send message';
+  btn.disabled = false;
+});
+
+// --- Mobile nav close on link click ---
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => document.querySelector('.nav-links').classList.remove('open'));
+});
+
+// --- Scroll fade-in for below-fold sections ---
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animation = 'fadeUp .6s ease forwards';
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('section:not(.hero)').forEach(s => {
+  s.style.opacity = '0';
+  observer.observe(s);
+});
+</script>
+
+</body>
+</html>
